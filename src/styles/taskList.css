@@ -1,0 +1,32 @@
+.task-list-container {
+max-width: 600px;
+margin: 0 auto;
+padding: 20px;
+border: 1px solid #ccc;
+background-color: #F9F9F9;
+}
+
+.task-input {
+    width: calc(100% - 22px);
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.add-task-button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    background-color: #007BFF;
+    color: white;
+    cursor: pointer;
+}
+
+.task-list {
+    padding: 10px;
+    border-bottom: 1px solid #ccc
+}
+
+.error-message {
+    color: red;
+}
