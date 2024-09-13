@@ -1,9 +1,16 @@
 .task-list-container {
-max-width: 600px;
-margin: 0 auto;
-padding: 20px;
-border: 1px solid #ccc;
-background-color: #F9F9F9;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    background-color: #F9F9F9;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+}
+
+.task-list-container:hover {
+    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.3);
+    transform: scale(1.05);
 }
 
 .task-input {
@@ -20,13 +27,94 @@ background-color: #F9F9F9;
     background-color: #007BFF;
     color: white;
     cursor: pointer;
+    transition: opacity 0.3s ease;
+}
+
+.add-task-button:hover {
+    opacity: 0.8;
+}
+
+.add-task-button:focus {
+    outline: 2px solid #007BFF;
+    outline-offset: 2px;
 }
 
 .task-list {
+    padding: 0;
+    list-style: none;
+}
+
+.task-list-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     padding: 10px;
-    border-bottom: 1px solid #ccc
+    border-bottom: 1px solid #ccc;
+    transition: background-color 0.3s ease;
+}
+
+.task-list-item:hover {
+    background-color: #F1F1F1;
+}
+
+.task-title {
+    flex-grow: 1;
+    cursor: pointer;
+}
+
+.task-title.completed {
+    text-decoration: line-through;
+}
+
+.delete-button {
+    background-color: transparent;
+    border: none;
+    color: red;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.delete-button:hover {
+    color: darkred;
+}
+
+.delete-button:focus {
+    outline: 2px solid red;
+    outline-offset: 2px;
 }
 
 .error-message {
     color: red;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #fff;
+}
+
+.task-input:focus,
+.add-task-button:focus {
+    outline: 2px solid #007BFF;
+    outline-offset: 2px;
+}
+
+.add-task-button:active {
+    background-color: #0056b3;
+}
+
+.confirmation-message {
+    color: green;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.completed {
+    text-decoration: line-through;
+    color: gray;
 }
