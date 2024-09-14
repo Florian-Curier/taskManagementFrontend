@@ -1,0 +1,126 @@
+@media (max-width: 768px) {
+    .task-list-container {
+        width: 100%;
+        padding: 10px;
+    }
+}
+
+html,
+body,
+#root,
+.App {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+/* Thème clair */
+.light-theme {
+    background-color: #ffffff;
+    color: #000000;
+}
+
+/* Thème sombre */
+.dark-theme {
+    background-color: #1E1E1E;
+    color: #f0f0f0;
+}
+
+/* Appliquer des transitions pour un changement fluide entre les thèmes */
+.App {
+    transition: all 0.3s ease;
+    padding: 20px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-sizing: border-box;
+}
+
+/* Bouton pour basculer entre les thèmes */
+.theme-toggle-button {
+    padding: 10px 20px;
+    margin-bottom: 20px;
+    border: none;
+    border-radius: 4px;
+    background-color: #007BFF;
+    color: white;
+    cursor: pointer;
+    transition: opacity 0.3s ease, background-color 0.3s ease;
+}
+
+.theme-toggle-button:hover {
+    opacity: 0.8;
+    background-color: #0056B3;
+}
+
+/* Styles généraux pour les composants */
+.task-list-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #28A745;
+    background-color: #fefefe;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    width: 100%;
+    max-width: 1200px;/*  A ajuster selon mes besoins  */
+    box-sizing: border-box;
+}
+
+/* Thème sombre pour le conteneur */
+.dark-theme .task-list-container {
+    background-color: #2A2A2A;
+    border: 1px solid #444;
+    color: #f0f0f0;
+    box-shadow: 0 4px 8px 0 rgba(255, 255, 255, 0.2);
+}
+
+/* Thème sombre pour les inputs */
+.dark-theme .task-input,
+.dark-theme .category-input,
+.dark-theme .search-input,
+.dark-theme .filter-input {
+    background-color: #333;
+    color: #f0f0f0;
+    border: 1px solid #444;
+}
+
+/* Thème sombre pour les boutons */
+.dark-theme .add-task-button,
+.dark-theme .edit-button,
+.dark-theme .delete-button {
+    background-color: #555;
+    color: #f0f0f0;
+    border: 1px solid #777;
+}
+
+.dark-theme .add-task-button:hover,
+.dark-theme .edit-button:hover,
+.dark-theme .delete-button:hover {
+    background-color: #666;
+}
+
+/* Liste des tâches en mode sombre */
+.dark-theme .task-list-item {
+    background-color: #2A2A2A;
+    border-bottom: 1px solid #444;
+}
+
+.dark-theme .task-list-item:hover {
+    background-color: #3A3A3A;
+}
+
+/* Thème sombre pour les messages d'erreur et de confirmation */
+.dark-theme .error-message {
+    background-color: #552020;
+    color: #FFB3B3;
+    border: 1px solid #FF6666;
+}
+
+.dark-theme .confirmation-message {
+    background-color: #204A20;
+    color: #B3FFB3;
+    border: 1px solid #66FF66;
+}
+

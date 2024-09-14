@@ -1,9 +1,11 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+
 .task-list-container {
     max-width: 600px;
     margin: 0 auto;
     padding: 20px;
-    border: 1px solid #ccc;
-    background-color: #F9F9F9;
+    border: 1px solid #28A745;
+    background-color: #fefefe;
     transition: all 0.3s ease;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
 }
@@ -24,7 +26,7 @@
     padding: 10px 20px;
     border: none;
     border-radius: 4px;
-    background-color: #007BFF;
+    background-color: #28A745;
     color: white;
     cursor: pointer;
     transition: opacity 0.3s ease;
@@ -32,6 +34,8 @@
 
 .add-task-button:hover {
     opacity: 0.8;
+    background-color: #218838;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.2);
 }
 
 .add-task-button:focus {
@@ -48,7 +52,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px;
+    padding: 15px;
     border-bottom: 1px solid #ccc;
     transition: background-color 0.3s ease;
 }
@@ -60,22 +64,25 @@
 .task-title {
     flex-grow: 1;
     cursor: pointer;
+    transition: color 0.3s, text-decoration 0.3s;
 }
 
 .task-title.completed {
     text-decoration: line-through;
+    color: #6C757D;
 }
 
 .delete-button {
     background-color: transparent;
-    border: none;
-    color: red;
+    border: 1px solid #DC3545;
+    color: #DC3545;
     cursor: pointer;
     transition: color 0.3s ease;
 }
 
 .delete-button:hover {
-    color: darkred;
+  color: white;
+    background-color: #C82333
 }
 
 .delete-button:focus {
@@ -84,9 +91,13 @@
 }
 
 .error-message {
-    color: red;
+    color: #DC3545;
     font-weight: bold;
     margin-top: 10px;
+    background-color: #F8D7DA;
+    padding: 10px;
+    border: 1px solid #F5C6CB;
+    border-radius: 4px;
 }
 
 body {
@@ -96,6 +107,8 @@ body {
     height: 100vh;
     margin: 0;
     background-color: #fff;
+    font-family: 'Roboto', sans-serif;
+    color: #333;
 }
 
 .task-input:focus,
@@ -109,12 +122,75 @@ body {
 }
 
 .confirmation-message {
-    color: green;
+    color: #28A745;
     font-weight: bold;
     margin-top: 10px;
+    background-color: #D4EDDA;
+    padding: 10px;
+    border: 1px solid #C3E6CB;
+    border-radius: 4px;
 }
 
 .completed {
     text-decoration: line-through;
     color: gray;
+}
+
+.search-input {
+    margin: 10px 0;
+    padding: 8px;
+    width: 100%;
+    box-sizing: border-box
+}
+
+.category-input, .filter-input {
+    padding: 8px;
+    margin: 10px 0;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.task-input, .category-input, .search-input, .filter-input {
+    margin-bottom: 15px;
+    padding: 12px;
+    width: 100%;
+}
+
+.add-task-button, .edit-button, .delete-button {
+    transition: background-color 0.3s, box-shadow 0.3s;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    padding: 10px;
+    font-size: 1rem;
+}
+
+.edit-button:hover {
+    background-color: #ffc107;
+}
+
+.edit-button {
+    background-color: #007bff;
+    color: white;
+}
+
+@media (max-width: 768px) {
+    .task-list-container {
+        width: 100%;
+        padding: 10px;
+    }
+}
+
+.edit-button, .delete-button {
+    width: 100%;
+    margin-top: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 30px;
+}
+
+.edit-button i, .delete-button i {
+    margin-right: 5px;
+    font-size: 1rem;
 }
