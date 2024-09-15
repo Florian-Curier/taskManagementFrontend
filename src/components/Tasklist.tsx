@@ -1,55 +1,51 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchTasks, addTask, toggleTaskCompleted, deleteTask, updateTask } from '../redux/taskSlice';
+import { fetchTasks, addTask, toggleTaskCompleted } from '../redux/taskSlice';
 import { RootState, AppDispatch } from '../redux/store';
-import { Task } from '../types';
 import '../styles/taskList.css';
+import TaskCard from './taskCard';
 
 const TaskList: React.FC = () => {
     const [taskTitle, setTaskTitle] = useState('');
-    const [taskCategory, setTaskCategory] = useState('');
+    const [taskDescription, setTaskDescription] = useState(''); // Description remplace catégorie
     const [taskPriority, setTaskPriority] = useState<'haute' | 'moyenne' | 'basse'>('moyenne');
-    const [taskDueDate, setTaskDueDate] = useState(''); // Date d'échéance optionnelle
+    const [taskDueDate, setTaskDueDate] = useState('');
     const [searchTerm, setSearchTerm] = useState('');
-    const [filterCategory, setFilterCategory] = useState('');
-    const [editingTask, setEditingTask] = useState<Task | null>(null);
     const [confirmationMessage, setConfirmationMessage] = useState<string | null>(null);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const dispatch = useDispatch<AppDispatch>();
-    const { tasks, loading, error } = useSelector((state: RootState) => {
-        console.log(state.tasks); 
-        return state.tasks;
-    });
+    const { tasks, loading, error } = useSelector((state: RootState) => state.tasks);
 
     useEffect(() => {
         dispatch(fetchTasks());
     }, [dispatch]);
 
     const handleAddTask = () => {
-        if (taskTitle.trim() && taskCategory.trim() && taskPriority) {
+        if (taskTitle.trim() && taskPriority) {
             const newTask = {
                 _id: Date.now().toString(),
                 id: Date.now().toString(),
                 title: taskTitle,
-                description: "",
+                description: taskDescription,
                 completed: false,
-                category: taskCategory,
                 priority: taskPriority,
-                dueDate: taskDueDate || null, // Date d'échéance optionnelle
-                UserId: '12345',
+                dueDate: taskDueDate ? new Date(taskDueDate).toISOString() : null, // Convertir la date correctement
+                UserId: '12345', // Si pertinent
+                category: '' // Add the category property
             };
+
             dispatch(addTask(newTask)).then(() => {
                 setTaskTitle('');
-                setTaskCategory('');
+                setTaskDescription('');
                 setTaskPriority('moyenne');
-                setTaskDueDate(''); // Réinitialise la date d'échéance
-                setErrorMessage(null);
+                setTaskDueDate('');
+                setConfirmationMessage('Task added successfully!');
+                setTimeout(() => setConfirmationMessage(null), 3000);
             }).catch((error) => {
                 setErrorMessage('Error adding task');
-                console.error(error);
             });
         } else {
-            setErrorMessage('Title, category, and priority are required');
+            setErrorMessage('Title and priority are required');
         }
     };
 
@@ -57,46 +53,18 @@ const TaskList: React.FC = () => {
         dispatch(toggleTaskCompleted(taskId));
     };
 
-    const handleDeleteTask = (taskId: string) => {
-        dispatch(deleteTask(taskId)).then(() => {
-            setConfirmationMessage('Task deleted successfully');
-            setTimeout(() => setConfirmationMessage(null), 3000); // Clear message after 3 seconds
-        });
-    };
-
-    const handleEditTask = (task: Task) => {
-        setEditingTask(task);
-        setTaskTitle(task.title);
-        setTaskCategory(task.category);
-        setTaskPriority(task.priority as 'haute' | 'moyenne' | 'basse');
-        setTaskDueDate(task.dueDate || ''); // Charger la date d'échéance lors de l'édition
-    };
-
-    const handleUpdateTask = () => {
-        if (editingTask && taskTitle.trim() && taskCategory.trim() && taskPriority) {
-            const updatedTask = { ...editingTask, title: taskTitle, category: taskCategory, priority: taskPriority, dueDate: taskDueDate || null };
-            dispatch(updateTask(updatedTask)).then(() => {
-                setEditingTask(null);
-                setTaskTitle('');
-                setTaskCategory('');
-                setTaskPriority('moyenne');
-                setTaskDueDate('');
-                setConfirmationMessage('Task updated successfully');
-                setTimeout(() => setConfirmationMessage(null), 3000);
-            });
-        } else {
-            setErrorMessage('Title, category, and priority are required');
-        }
-    };
-
-    const filteredTasks = tasks.filter(task =>
-        task.title.toLowerCase().includes(searchTerm.toLowerCase()) &&
-        (filterCategory ? task.category === filterCategory : true)
+    const filteredTasks = tasks.filter(task => 
+        task.title.toLowerCase().includes(searchTerm.toLowerCase()) && 
+        (task.description ? task.description.toLowerCase().includes(searchTerm.toLowerCase()) : true)
     );
 
     return (
         <div className="task-list-container">
             <h1>Task List</h1>
+
+            {confirmationMessage && <p className="confirmation-message">{confirmationMessage}</p>}
+            {errorMessage && <p className="error-message">{errorMessage}</p>}
+
             <input
                 type="text"
                 value={taskTitle}
@@ -104,12 +72,17 @@ const TaskList: React.FC = () => {
                 placeholder="Add a task"
                 className="task-input"
             />
+            <textarea
+                value={taskDescription}
+                onChange={(e) => setTaskDescription(e.target.value)}
+                placeholder="Add a description"
+                className="description-input"
+            />
             <input
-                type="text"
-                value={taskCategory}
-                onChange={(e) => setTaskCategory(e.target.value)}
-                placeholder="Add a category"
-                className="category-input"
+                type="date"
+                value={taskDueDate}
+                onChange={(e) => setTaskDueDate(e.target.value)}
+                className="due-date-input"
             />
             <select
                 value={taskPriority}
@@ -120,16 +93,8 @@ const TaskList: React.FC = () => {
                 <option value="moyenne">Moyenne</option>
                 <option value="basse">Basse</option>
             </select>
-            <input
-                type="date"
-                value={taskDueDate}
-                onChange={(e) => setTaskDueDate(e.target.value)}
-                placeholder="Add a due date"
-                className="due-date-input"
-            />
-            <button onClick={editingTask ? handleUpdateTask : handleAddTask} className="add-task-button">
-                {editingTask ? 'Update Task' : 'Add Task'}
-            </button>
+            <button onClick={handleAddTask} className="add-task-button">Add Task</button>
+
             <input
                 type="text"
                 value={searchTerm}
@@ -137,35 +102,15 @@ const TaskList: React.FC = () => {
                 placeholder="Search tasks"
                 className="search-input"
             />
-            <input
-                type="text"
-                value={filterCategory}
-                onChange={(e) => setFilterCategory(e.target.value)}
-                placeholder="Filter by category"
-                className="filter-input"
-            />
-            {loading && <p>Loading...</p>}
+
+            {loading && <p>Loading tasks...</p>}
             {error && <p className="error-message">{error}</p>}
-            {confirmationMessage && <p className="confirmation-message">{confirmationMessage}</p>}
-            {errorMessage && <p className="error-message">{errorMessage}</p>}
-            <ul className="task-list">
+
+            <div className="task-grid">
                 {filteredTasks.map(task => (
-                    <li key={task._id} className="task-list-item">
-                        <span
-                            className={`task-title ${task.completed ? 'completed' : ''}`}
-                            onClick={() => handleToggleCompleted(task._id ?? '')}
-                        >
-                            {task.title} - {task.category || 'No category'} - {task.priority} - Due: {task.dueDate ? task.dueDate : 'No due date'}
-                        </span>
-                        <button className="edit-button" onClick={() => handleEditTask(task)}>
-                            <i className="fas fa-edit"></i> Edit
-                        </button>
-                        <button className="delete-button" onClick={() => handleDeleteTask(task._id ?? '')}>
-                            <i className="fas fa-trash-alt"></i> Delete
-                        </button>
-                    </li>
+                    <TaskCard key={task._id} task={task} onToggleComplete={handleToggleCompleted} />
                 ))}
-            </ul>
+            </div>
         </div>
     );
 };

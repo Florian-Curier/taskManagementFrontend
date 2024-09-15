@@ -1,0 +1,33 @@
+.task-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.task-card {
+    background-color: #F9F9F9;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.1); 
+    transition: transform 0.3s ease;
+    margin: 10px;
+}
+
+.task-card:hover {
+    transform: scale(1.05);
+}
+
+.task-card.high-priority {
+    background-color: #FFCCCC;
+    border-left: 5px solid #E60000;
+}
+
+.task-card.medium-priority {
+    background-color: #FFE5CC;
+    border-left: 5px solid #FF6600;
+}
+
+.task-card.low-priority { 
+    background-color: #CCFFCC;
+    border-left: 5px solid #33CC33;
+}
