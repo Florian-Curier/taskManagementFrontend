@@ -9,7 +9,7 @@ export interface Task {
     title: string;
     description: string;
     completed: boolean;
-    priority: 'haute' | 'moyenne' | 'basse';
+    priority: 'high' | 'medium' | 'low';
     dueDate: string | null;
     subTasks: SubTask[];
 }

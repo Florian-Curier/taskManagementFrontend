@@ -34,12 +34,13 @@ const TaskCard: React.FC<TaskCardProps> = ({ task, onToggleComplete, onAddSubTas
             </ul>
 
             <input
+            className="add-subtask-input"
                 type="text"
                 value={subTaskTitle}
                 onChange={(e) => setSubTaskTitle(e.target.value)}
                 placeholder="Add sub-task"
             />
-            <button onClick={() => {
+            <button  className="add-subtask-button"  onClick={() => {
                 if (subTaskTitle.trim()) {
                     onAddSubTask(task._id, subTaskTitle);
                     setSubTaskTitle('');  // Clear the input after adding

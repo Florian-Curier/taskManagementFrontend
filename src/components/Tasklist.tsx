@@ -8,7 +8,7 @@ import '../styles/taskList.css';
 const TaskList: React.FC = () => {
     const [taskTitle, setTaskTitle] = useState('');
     const [taskDescription, setTaskDescription] = useState('');
-    const [taskPriority, setTaskPriority] = useState<'haute' | 'moyenne' | 'basse'>('moyenne');
+    const [taskPriority, setTaskPriority] = useState<'high' | 'medium' | 'low'>('medium');
     const [taskDueDate, setTaskDueDate] = useState('');
     const dispatch = useDispatch<AppDispatch>();
     const { tasks, loading, error } = useSelector((state: RootState) => state.tasks);
@@ -35,7 +35,7 @@ const TaskList: React.FC = () => {
             dispatch(addTask(newTask)).then(() => {
                 setTaskTitle('');
                 setTaskDescription('');
-                setTaskPriority('moyenne');
+                setTaskPriority('medium');
                 setTaskDueDate('');
             });
         }
@@ -80,12 +80,12 @@ const TaskList: React.FC = () => {
             />
             <select
                 value={taskPriority}
-                onChange={(e) => setTaskPriority(e.target.value as 'haute' | 'moyenne' | 'basse')}
+                onChange={(e) => setTaskPriority(e.target.value as 'high' | 'medium' | 'low')}
                 className="priority-select"
             >
-                <option value="haute">Haute</option>
-                <option value="moyenne">Moyenne</option>
-                <option value="basse">Basse</option>
+                <option value="high">High</option>
+                <option value="medium">Medium</option>
+                <option value="low">Low</option>
             </select>
             <button onClick={handleAddTask} className="add-task-button">Add Task</button>
 

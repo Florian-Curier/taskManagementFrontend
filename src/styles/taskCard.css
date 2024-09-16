@@ -17,17 +17,55 @@
     transform: scale(1.05);
 }
 
-.task-card.high-priority {
+.high-priority {
     background-color: #FFCCCC;
     border-left: 5px solid #E60000;
 }
 
-.task-card.medium-priority {
+.medium-priority {
     background-color: #FFE5CC;
     border-left: 5px solid #FF6600;
 }
 
-.task-card.low-priority { 
+.low-priority { 
     background-color: #CCFFCC;
     border-left: 5px solid #33CC33;
+}
+
+.add-subtask-button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.add-subtask-button:hover {
+    background-color: #45A049;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.add-subtask-button:active {
+    background-color: #3E8E41;
+    transform: translateY(2px); /*Légère descente du bouton au clic  */
+}
+
+.add-subtask-input {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #CCC;
+    border-radius: 5px;
+    font-size: 16px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.add-subtask-input:focus {
+    border-color: #4CAF50;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    outline: none; /* Suppression du focus par défaut */
 }

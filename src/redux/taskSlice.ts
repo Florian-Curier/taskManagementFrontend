@@ -202,7 +202,7 @@ const taskSlice = createSlice({
             const updatedTask = action.payload;
             const taskIndex = state.tasks.findIndex(task => task._id === updatedTask._id);
             if (taskIndex !== -1) {
-                state.tasks[taskIndex] = updatedTask; // Met à jour la tâche avec les sous-tâches
+                state.tasks[taskIndex] = updatedTask; // Mets à jour la tâche avec les sous-tâches
             }
         });
     },
