@@ -34,6 +34,30 @@ export const addTask = createAsyncThunk('tasks/addTask', async (newTask: Task, {
     }
 });
 
+export const addSubTask = createAsyncThunk(
+    'tasks/addSubTask',
+    async ({ taskId, subTaskTitle }: { taskId: string; subTaskTitle: string }, { rejectWithValue }) => {
+      try {
+        const response = await fetch(`/api/tasks/${taskId}/subtask`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ title: subTaskTitle }),
+        });
+  
+        if (!response.ok) {
+          const errorText = await response.text();
+          return rejectWithValue(`Error adding subtask: ${errorText}`);
+        }
+  
+        return await response.json(); // Retourner la tâche avec la sous-tâche ajoutée
+      } catch (error) {
+        return rejectWithValue(`Error adding subtask: ${(error as Error).message}`);
+      }
+    }
+  );
+
 // Nouvelle action asynchrone pour mettre à jour une tâche
 export const updateTask = createAsyncThunk('tasks/updateTask', async (updatedTask: Task, { rejectWithValue }) => {
     try {
@@ -92,6 +116,26 @@ export const toggleTaskCompleted = createAsyncThunk('tasks/toggleTaskCompleted',
         return rejectWithValue(`Error toggling task: ${(error as Error).message}`);
     }
 });
+
+ // Implémentation de la logique pour basculer l'état de la sous-tâche.
+ export const toggleSubTaskCompleted = createAsyncThunk(
+    'tasks/toggleSubTaskCompleted',
+    async ({ taskId, subTaskIndex }: { taskId: string; subTaskIndex: number }, { rejectWithValue }) => {
+        try {
+            const response = await fetch(`/api/tasks/${taskId}/subtasks/${subTaskIndex}/toggle`, {
+                method: 'PATCH',
+            });
+            if (!response.ok) {
+                const errorText = await response.text();
+                return rejectWithValue(`Error toggling sub-task: ${errorText}`);
+            }
+            return (await response.json()) as Task;
+        } catch (error) {
+            return rejectWithValue(`Error toggling sub-task: ${(error as Error).message}`);
+        }
+    }
+);
+
 
 // Définir le type pour l'état initial
 interface TaskState {
@@ -153,6 +197,13 @@ const taskSlice = createSlice({
         });
         builder.addCase(toggleTaskCompleted.rejected, (state, action) => {
             state.error = action.payload as string;
+        });
+        builder.addCase(addSubTask.fulfilled, (state, action) => {
+            const updatedTask = action.payload;
+            const taskIndex = state.tasks.findIndex(task => task._id === updatedTask._id);
+            if (taskIndex !== -1) {
+                state.tasks[taskIndex] = updatedTask; // Met à jour la tâche avec les sous-tâches
+            }
         });
     },
 });

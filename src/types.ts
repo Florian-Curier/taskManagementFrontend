@@ -1,11 +1,15 @@
+export interface SubTask {
+    title: string;
+    completed: boolean;
+}
 
 export interface Task {
-    dueDate: string | null | undefined
-    priority: "haute" | "moyenne" | "basse"
-    category: string
-    _id: string | null | undefined
-    id: string 
-    title: string
-    description: string
-    completed: boolean
+    _id: string;
+    id: string;
+    title: string;
+    description: string;
+    completed: boolean;
+    priority: 'haute' | 'moyenne' | 'basse';
+    dueDate: string | null;
+    subTasks: SubTask[];
 }
