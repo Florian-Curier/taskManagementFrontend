@@ -11,6 +11,7 @@ interface TaskCardProps {
 
 const TaskCard: React.FC<TaskCardProps> = ({ task, onToggleComplete, onAddSubTask, onToggleSubTaskComplete }) => {
     const [subTaskTitle, setSubTaskTitle] = useState('');
+    const [error, setError] = useState<string | null>(null);
 
     return (
         <div className={`task-card ${task.priority}-priority`}>
@@ -26,7 +27,7 @@ const TaskCard: React.FC<TaskCardProps> = ({ task, onToggleComplete, onAddSubTas
                         <input
                             type="checkbox"
                             checked={subTask.completed}
-                            onChange={() => onToggleSubTaskComplete(task.id, index)}
+                            onChange={() => onToggleSubTaskComplete(task._id, index)}
                         />
                         {subTask.title}
                     </li>
@@ -41,13 +42,20 @@ const TaskCard: React.FC<TaskCardProps> = ({ task, onToggleComplete, onAddSubTas
                 placeholder="Add sub-task"
             />
             <button  className="add-subtask-button"  onClick={() => {
-                if (subTaskTitle.trim()) {
-                    onAddSubTask(task._id, subTaskTitle);
-                    setSubTaskTitle('');  // Clear the input after adding
-                }
-            }}>
-                Add Sub-task
-            </button>
+    console.log('Task ID:', task._id);
+    console.log('Sub-task title:', subTaskTitle);
+    
+    if (subTaskTitle.trim()) {
+        onAddSubTask(task._id, subTaskTitle);
+        setSubTaskTitle('');  // Efface l'input après ajout
+        setError(null);
+    } else {
+        setError("Sub-task title cannot be empty");
+    }
+}}>
+    Add Sub-task
+</button>
+{error && <p className="error-message">{error}</p>}
 
             <button onClick={() => onToggleComplete(task._id ?? '')}>
                 {task.completed ? 'Mark as Incomplete' : 'Mark as Complete'}

@@ -121,6 +121,9 @@ export const toggleTaskCompleted = createAsyncThunk('tasks/toggleTaskCompleted',
  export const toggleSubTaskCompleted = createAsyncThunk(
     'tasks/toggleSubTaskCompleted',
     async ({ taskId, subTaskIndex }: { taskId: string; subTaskIndex: number }, { rejectWithValue }) => {
+if (!taskId || !subTaskIndex) {
+    return rejectWithValue("TaskId or subTaskIndex is undefined")
+}
         try {
             const response = await fetch(`/api/tasks/${taskId}/subtasks/${subTaskIndex}/toggle`, {
                 method: 'PATCH',
