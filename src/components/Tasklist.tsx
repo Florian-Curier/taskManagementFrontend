@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchTasks, addTask, toggleTaskCompleted, toggleSubTaskCompleted, addSubTask } from '../redux/taskSlice'; 
+import { fetchTasks, addTask, toggleTaskCompleted, toggleSubTaskCompleted, addSubTask, deleteTask } from '../redux/taskSlice'; 
 import { RootState, AppDispatch } from '../redux/store';
 import TaskCard from './taskCard'; 
 import '../styles/taskList.css';
@@ -12,6 +12,7 @@ const TaskList: React.FC = () => {
     const [taskDueDate, setTaskDueDate] = useState('');
     const dispatch = useDispatch<AppDispatch>();
     const { tasks, loading, error } = useSelector((state: RootState) => state.tasks);
+    
 
     useEffect(() => {
         dispatch(fetchTasks());
@@ -53,6 +54,17 @@ const TaskList: React.FC = () => {
 
     const handleToggleCompleted = (taskId: string) => {
         dispatch(toggleTaskCompleted(taskId));
+    }
+   
+    const handleDescriptionChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+        const maxChars = 200; // Par exemple, limiter à 200 caractères
+        if (e.target.value.length <= maxChars) {
+            setTaskDescription(e.target.value);
+        }
+    };
+
+    const handleDeleteTask = (taskId: string) => {
+        dispatch(deleteTask(taskId));
     };
 
     return (
@@ -68,10 +80,12 @@ const TaskList: React.FC = () => {
             />
             <textarea
                 value={taskDescription}
-                onChange={(e) => setTaskDescription(e.target.value)}
+                onChange={handleDescriptionChange}
                 placeholder="Add a description"
                 className="description-input"
             />
+
+            <div className="form-container">
             <input
                 type="date"
                 value={taskDueDate}
@@ -88,6 +102,7 @@ const TaskList: React.FC = () => {
                 <option value="low">Low</option>
             </select>
             <button onClick={handleAddTask} className="add-task-button">Add Task</button>
+            </div>
 
             {loading && <p>Loading tasks...</p>}
             {error && <p className="error-message">{error}</p>}
@@ -100,6 +115,7 @@ const TaskList: React.FC = () => {
                         onToggleComplete={handleToggleCompleted}
                         onAddSubTask={handleAddSubTask}
                         onToggleSubTaskComplete={handleToggleSubTaskComplete}
+                        onDelete={handleDeleteTask}
                     />
                 ))}
             </div>

@@ -121,9 +121,9 @@ export const toggleTaskCompleted = createAsyncThunk('tasks/toggleTaskCompleted',
  export const toggleSubTaskCompleted = createAsyncThunk(
     'tasks/toggleSubTaskCompleted',
     async ({ taskId, subTaskIndex }: { taskId: string; subTaskIndex: number }, { rejectWithValue }) => {
-if (!taskId || !subTaskIndex) {
-    return rejectWithValue("TaskId or subTaskIndex is undefined")
-}
+        if (!taskId || typeof subTaskIndex !== 'number') {
+            return rejectWithValue("TaskId or subTaskIndex undefined");
+        }
         try {
             const response = await fetch(`/api/tasks/${taskId}/subtasks/${subTaskIndex}/toggle`, {
                 method: 'PATCH',
@@ -208,6 +208,14 @@ const taskSlice = createSlice({
                 state.tasks[taskIndex] = updatedTask; // Mets à jour la tâche avec les sous-tâches
             }
         });
+        builder.addCase(toggleSubTaskCompleted.fulfilled, (state, action) => {
+const updatedTask = action.payload
+const taskIndex = state.tasks.findIndex(task => task._id === updatedTask._id)
+if (taskIndex !== -1) {
+    state.tasks[taskIndex] = updatedTask
+}
+        })
+
     },
 });
 

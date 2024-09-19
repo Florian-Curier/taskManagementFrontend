@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
 
 .task-list-container {
-    max-width: 600px;
+    max-width: 1200px;
     margin: 0 auto;
     padding: 20px;
     border: 1px solid #28A745;
@@ -10,16 +10,23 @@
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
 }
 
+@media (max-width: 1200px) {
+    .task-list-container {
+        max-width: 90%; /* Utilisation d'une largeur relative pour les écrans plus petits */
+    }}
+
 .task-list-container:hover {
     box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.3);
     transform: scale(1.05);
 }
 
-.task-input {
-    width: calc(100% - 22px);
-    padding: 10px;
-    border: 1px solid #ccc;
+.task-input, .category-input, .filter-input {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
     border-radius: 4px;
+    border: 1px solid #CCC;
+    font-size: 16px;
 }
 
 .add-task-button {
@@ -33,14 +40,12 @@
 }
 
 .add-task-button:hover {
-    opacity: 0.8;
     background-color: #218838;
     box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.2);
 }
 
 .add-task-button:focus {
     outline: 2px solid #007BFF;
-    outline-offset: 2px;
 }
 
 .task-list {
@@ -81,8 +86,8 @@
 }
 
 .delete-button:hover {
-  color: white;
-    background-color: #C82333
+    color: white;
+    background-color: #C82333;
 }
 
 .delete-button:focus {
@@ -100,21 +105,11 @@
     border-radius: 4px;
 }
 
-body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
-    background-color: #fff;
-    font-family: 'Roboto', sans-serif;
-    color: #333;
-}
-
-.task-input:focus,
-.add-task-button:focus {
-    outline: 2px solid #007BFF;
-    outline-offset: 2px;
+.search-input {
+    padding: 8px;
+    margin: 10px 0;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .add-task-button:active {
@@ -129,70 +124,6 @@ body {
     padding: 10px;
     border: 1px solid #C3E6CB;
     border-radius: 4px;
-}
-
-.completed {
-    text-decoration: line-through;
-    color: gray;
-}
-
-.search-input {
-    margin: 10px 0;
-    padding: 8px;
-    width: 100%;
-    box-sizing: border-box
-}
-
-.category-input, .filter-input {
-    padding: 8px;
-    margin: 10px 0;
-    width: 100%;
-    box-sizing: border-box;
-}
-
-.task-input, .category-input, .search-input, .filter-input {
-    margin-bottom: 15px;
-    padding: 12px;
-    width: 100%;
-}
-
-.add-task-button, .edit-button, .delete-button {
-    transition: background-color 0.3s, box-shadow 0.3s;
-    border-radius: 4px;
-    border: none;
-    cursor: pointer;
-    padding: 10px;
-    font-size: 1rem;
-}
-
-.edit-button:hover {
-    background-color: #ffc107;
-}
-
-.edit-button {
-    background-color: #007bff;
-    color: white;
-}
-
-@media (max-width: 768px) {
-    .task-list-container {
-        width: 100%;
-        padding: 10px;
-    }
-}
-
-.edit-button, .delete-button {
-    width: 100%;
-    margin-top: 5px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-left: 30px;
-}
-
-.edit-button i, .delete-button i {
-    margin-right: 5px;
-    font-size: 1rem;
 }
 
 .task-table {
@@ -216,12 +147,54 @@ body {
     background-color: #f1f1f1;
 }
 
+input[type="date"] {
+    padding: 10px;
+    border: 1px solid #CCC;
+    border-radius: 5px;
+    font-size: 16px;
+    background-color: #F9F9F9;
+    transition: all 0.3s ease;
+}
+
+input[type="date"]:focus {
+    border-color: #4CAF50;
+    box-shadow: 0px 0px 10px rgba(76, 175, 80, 0.3);
+    outline: none;
+}
+
+select {
+    padding: 10px;
+    border: 1px solid #CCC;
+    border-radius: 5px;
+    font-size: 16px;
+    background-color: #F9F9F9;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+select:focus {
+    border-color: #4CAF50;
+    box-shadow: 0px 0px 10px rgba(76, 175, 80, 0.3);
+    outline: none;
+}
+
 .description-input {
     width: 100%;
     padding: 10px;
-    border: 1px solid #ccc;
+    margin: 10px 0;
+    border: 1px solid #CCC;
     border-radius: 4px;
-    margin-bottom: 10px;
-    height: 80px;
+    font-size: 16px;
     resize: vertical;
+}
+
+.form-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+input[type="date"], select, button {
+    margin-right: 10px;
+    padding: 10px;
 }
