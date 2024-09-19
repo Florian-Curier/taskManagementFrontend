@@ -24,7 +24,9 @@ const TaskCard: React.FC<TaskCardProps> = ({ task, onToggleComplete, onAddSubTas
             </div>
             <h3>{task.title}</h3>
             <p>{task.description || 'No description'}</p>
-            <p>Due Date: {task.dueDate ? new Date(task.dueDate).toLocaleDateString() : 'No due date'}</p>
+            <p>
+            Due Date: {task.dueDate ? new Date(task.dueDate).toLocaleDateString() : 'No due date'} {task.dueDate ? new Date(task.dueDate).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : ''}
+                </p>
 
             <h4>Sub-tasks:</h4>
             <ul>

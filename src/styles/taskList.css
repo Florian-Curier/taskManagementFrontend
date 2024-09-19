@@ -179,13 +179,13 @@ select:focus {
 }
 
 .description-input {
-    width: 100%;
+    width: 95%;
     padding: 10px;
     margin: 10px 0;
     border: 1px solid #CCC;
     border-radius: 4px;
     font-size: 16px;
-    resize: vertical;
+    resize: none;
 }
 
 .form-container {
@@ -197,4 +197,15 @@ select:focus {
 input[type="date"], select, button {
     margin-right: 10px;
     padding: 10px;
+}
+
+.task-input {
+    width: 95%;
+}
+
+.time-input {
+    padding: 10px;
+    margin-left: 10px;
+    border: 1px solid #CCC;
+    border-radius: 4px;
 }

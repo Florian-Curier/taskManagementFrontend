@@ -10,6 +10,7 @@ const TaskList: React.FC = () => {
     const [taskDescription, setTaskDescription] = useState('');
     const [taskPriority, setTaskPriority] = useState<'high' | 'medium' | 'low'>('medium');
     const [taskDueDate, setTaskDueDate] = useState('');
+    const [taskTime, setTasktime] = useState('')
     const dispatch = useDispatch<AppDispatch>();
     const { tasks, loading, error } = useSelector((state: RootState) => state.tasks);
     
@@ -26,7 +27,7 @@ const TaskList: React.FC = () => {
                 description: taskDescription,
                 completed: false,
                 priority: taskPriority,
-                dueDate: taskDueDate,
+                dueDate: taskDueDate ? `${taskDueDate}T${taskTime}`:'',//combiner date et heure
                 UserId: '12345',
                 subTasks: [], 
                 category: '',
@@ -38,6 +39,7 @@ const TaskList: React.FC = () => {
                 setTaskDescription('');
                 setTaskPriority('medium');
                 setTaskDueDate('');
+                setTasktime('')//Réinitialiser l'heure
             });
         }
     };
@@ -92,6 +94,16 @@ const TaskList: React.FC = () => {
                 onChange={(e) => setTaskDueDate(e.target.value)}
                 className="due-date-input"
             />
+
+<input
+type="time"
+value={taskTime}
+onChange={(e) => setTasktime(e.target.value)}
+className="time-input"
+/>
+
+
+
             <select
                 value={taskPriority}
                 onChange={(e) => setTaskPriority(e.target.value as 'high' | 'medium' | 'low')}
