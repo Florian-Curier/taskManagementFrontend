@@ -1,24 +1,21 @@
-import { fr, enUS } from 'date-fns/locale'; // Import the 'enUS' locale
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
-import TextField from '@mui/material/TextField';
 import React, { useState } from 'react';
+import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
+import moment, { Moment } from 'moment';
 
-const DateTimePickerComponent = () => {
-  const [dueDateTime, setDueDateTime] = useState<Date | null>(new Date());
+interface DateTimePickerComponentProps {
+  value: Moment | null;
+  onChange: (newValue: Moment | null) => void;
+}
 
-  const handleDateChange = (newValue: Date | null) => {
-    setDueDateTime(newValue);
-  };
-
+const DateTimePickerComponent: React.FC<DateTimePickerComponentProps> = ({ value, onChange }) => {
   return (
-    <LocalizationProvider dateAdapter={AdapterDateFns}>
+    <LocalizationProvider dateAdapter={AdapterMoment}>
       <DateTimePicker
         label="Sélectionner une date et une heure"
-        value={dueDateTime}
-        onChange={handleDateChange}
-    
+        value={value}
+        onChange={onChange}
       />
     </LocalizationProvider>
   );
