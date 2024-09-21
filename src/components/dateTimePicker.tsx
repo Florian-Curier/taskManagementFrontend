@@ -13,7 +13,7 @@ const DateTimePickerComponent: React.FC<DateTimePickerComponentProps> = ({ value
   return (
     <LocalizationProvider dateAdapter={AdapterMoment}>
       <DateTimePicker
-        label="Sélectionner une date et une heure"
+        label="Select a date and time"
         value={value}
         onChange={onChange}
       />
