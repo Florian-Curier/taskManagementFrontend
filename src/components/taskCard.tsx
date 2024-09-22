@@ -3,30 +3,48 @@ import { Task, SubTask } from '../types';
 import '../styles/taskCard.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleXmark } from '@fortawesome/free-solid-svg-icons';
+import { useDispatch } from 'react-redux';  // Import pour utiliser dispatch
+import { addSubTask } from '../redux/taskSlice';  // Import de l'action addSubTask
 
 interface TaskCardProps {
     task: Task;
     onToggleComplete: (taskId: string) => void;
-    onAddSubTask: (taskId: string, subTaskTitle: string) => void;
     onToggleSubTaskComplete: (taskId: string, subTaskIndex: number) => void;
-    onDelete: (taskId: string) => void; // Ajout de la prop onDelete
+    onDelete: (taskId: string) => void;
+    onAddSubTask: (taskId: string, subTaskTitle: string) => void
 }
 
-const TaskCard: React.FC<TaskCardProps> = ({ task, onToggleComplete, onAddSubTask, onToggleSubTaskComplete, onDelete }) => {
-    const [subTaskTitle, setSubTaskTitle] = useState('');
+const TaskCard: React.FC<TaskCardProps> = ({ task, onToggleComplete, onToggleSubTaskComplete, onDelete }) => {
+    const [subTaskTitle, setSubTaskTitle] = useState('');  // État pour le titre de la sous-tâche
     const [error, setError] = useState<string | null>(null);
+    const dispatch = useDispatch();  // Utiliser dispatch pour envoyer l'action
+
+    // Fonction pour gérer l'ajout d'une sous-tâche
+    const handleAddSubTask = () => {
+        if (subTaskTitle.trim()) {
+            // Envoie la requête avec le titre de la sous-tâche
+            console.log("TaskId:", task._id); // Debug
+            console.log("SubTaskTitle:", subTaskTitle); // Debug
+            dispatch(addSubTask({ taskId: task._id, subTaskTitle }));
+            setSubTaskTitle('');  // Réinitialise l'input après ajout
+            setError(null);  // Réinitialise l'erreur
+        } else {
+            console.error("Le titre de la sous-tâche est vide");
+            setError("Le titre de la sous-tâche ne peut pas être vide");
+        }
+    };
 
     return (
         <div className={`task-card ${task.priority}-priority`}>
             <div className="task-card-header">
-                {/* Ajout de l'événement onClick pour supprimer la tâche */}
                 <FontAwesomeIcon icon={faCircleXmark} className="cross-icon" onClick={() => onDelete(task._id)} />
             </div>
             <h3>{task.title}</h3>
             <p>{task.description || 'No description'}</p>
             <p>
-            Due Date: {task.dueDate ? new Date(task.dueDate).toLocaleDateString() : 'No due date'} {task.dueDate ? new Date(task.dueDate).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : ''}
-                </p>
+                Due Date: {task.dueDate ? new Date(task.dueDate).toLocaleDateString() : 'No due date'} 
+                {task.dueDate ? new Date(task.dueDate).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : ''}
+            </p>
 
             <h4>Sub-tasks:</h4>
             <ul>
@@ -49,18 +67,7 @@ const TaskCard: React.FC<TaskCardProps> = ({ task, onToggleComplete, onAddSubTas
                 onChange={(e) => setSubTaskTitle(e.target.value)}
                 placeholder="Add sub-task"
             />
-            <button
-                className="add-subtask-button"
-                onClick={() => {
-                    if (subTaskTitle.trim()) {
-                        onAddSubTask(task._id, subTaskTitle);
-                        setSubTaskTitle(''); // Efface l'input après ajout
-                        setError(null);
-                    } else {
-                        setError("Sub-task title cannot be empty");
-                    }
-                }}
-            >
+            <button className="add-subtask-button" onClick={handleAddSubTask}>
                 Add Sub-task
             </button>
             {error && <p className="error-message">{error}</p>}

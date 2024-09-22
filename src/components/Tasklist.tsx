@@ -93,7 +93,7 @@ const TaskList: React.FC = () => {
             task={task}
             onToggleComplete={() => dispatch(toggleTaskCompleted(task._id))}
             onAddSubTask={(subTaskTitle) => dispatch(addSubTask({ taskId: task._id, subTaskTitle }))}
-            onToggleSubTaskComplete={(subTaskIndex) => dispatch(toggleSubTaskCompleted({ taskId: task._id, subTaskIndex: Number(subTaskIndex) }))}
+            onToggleSubTaskComplete={(taskId, subTaskIndex) => dispatch(toggleSubTaskCompleted({ taskId, subTaskIndex }))}
             onDelete={() => dispatch(deleteTask(task._id))}
           />
         ))}

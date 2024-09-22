@@ -34,29 +34,30 @@ export const addTask = createAsyncThunk('tasks/addTask', async (newTask: Task, {
     }
 });
 
-export const addSubTask = createAsyncThunk(
+export const addSubTask = createAsyncThunk<
+    Task, // Type du résultat de l'action (par exemple, une tâche mise à jour)
+    { taskId: string; subTaskTitle: string }, // Les arguments de l'action
+    { rejectValue: string } // Type des erreurs
+>(
     'tasks/addSubTask',
-    async ({ taskId, subTaskTitle }: { taskId: string; subTaskTitle: string }, { rejectWithValue }) => {
-      try {
-        const response = await fetch(`/api/tasks/${taskId}/subtask`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ title: subTaskTitle }),
-        });
-  
-        if (!response.ok) {
-          const errorText = await response.text();
-          return rejectWithValue(`Error adding subtask: ${errorText}`);
+    async ({ taskId, subTaskTitle }, { rejectWithValue }) => {
+        try {
+            const response = await fetch(`/api/tasks/${taskId}/subtask`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ title: subTaskTitle }),
+            });
+            if (!response.ok) {
+                return rejectWithValue('Erreur lors de l\'ajout de la sous-tâche');
+            }
+            return (await response.json()) as Task;
+        } catch (error) {
+            return rejectWithValue('Erreur réseau lors de l\'ajout de la sous-tâche');
         }
-  
-        return await response.json(); // Retourner la tâche avec la sous-tâche ajoutée
-      } catch (error) {
-        return rejectWithValue(`Error adding subtask: ${(error as Error).message}`);
-      }
     }
-  );
+);
 
 // Nouvelle action asynchrone pour mettre à jour une tâche
 export const updateTask = createAsyncThunk('tasks/updateTask', async (updatedTask: Task, { rejectWithValue }) => {
@@ -122,17 +123,23 @@ export const toggleTaskCompleted = createAsyncThunk('tasks/toggleTaskCompleted',
     'tasks/toggleSubTaskCompleted',
     async ({ taskId, subTaskIndex }: { taskId: string; subTaskIndex: number }, { rejectWithValue }) => {
         if (!taskId || typeof subTaskIndex !== 'number') {
+            console.error("Invalid taskId or subTaskIndex", { taskId, subTaskIndex });
             return rejectWithValue("TaskId or subTaskIndex undefined");
         }
         try {
             const response = await fetch(`/api/tasks/${taskId}/subtasks/${subTaskIndex}/toggle`, {
                 method: 'PATCH',
             });
+
+            // Log the response to debug the server response
+            const data = await response.json();
+            console.log('Response from server:', data);
+
             if (!response.ok) {
-                const errorText = await response.text();
-                return rejectWithValue(`Error toggling sub-task: ${errorText}`);
+                return rejectWithValue(`Error toggling sub-task: ${data.message || "Unknown error"}`);
             }
-            return (await response.json()) as Task;
+
+            return data as Task;
         } catch (error) {
             return rejectWithValue(`Error toggling sub-task: ${(error as Error).message}`);
         }
@@ -203,19 +210,25 @@ const taskSlice = createSlice({
         });
         builder.addCase(addSubTask.fulfilled, (state, action) => {
             const updatedTask = action.payload;
+            console.log('Updated task after sub-task addition:', updatedTask);  // Affiche la tâche mise à jour avec les sous-tâches
+        
             const taskIndex = state.tasks.findIndex(task => task._id === updatedTask._id);
             if (taskIndex !== -1) {
-                state.tasks[taskIndex] = updatedTask; // Mets à jour la tâche avec les sous-tâches
+                state.tasks[taskIndex] = updatedTask;  // Mets à jour la tâche dans le state Redux
             }
         });
         builder.addCase(toggleSubTaskCompleted.fulfilled, (state, action) => {
-const updatedTask = action.payload
-const taskIndex = state.tasks.findIndex(task => task._id === updatedTask._id)
-if (taskIndex !== -1) {
-    state.tasks[taskIndex] = updatedTask
-}
-        })
-
+            console.log('Payload:', action.payload); 
+            
+            const updatedTask = action.payload;
+            console.log('Updated Task ID:', updatedTask?._id); 
+        
+            const taskIndex = state.tasks.findIndex(task => task._id === updatedTask._id);
+        
+            if (taskIndex !== -1) {
+                state.tasks[taskIndex] = updatedTask;
+            }
+        });
     },
 });
 
