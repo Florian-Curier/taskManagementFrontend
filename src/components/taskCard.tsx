@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleXmark } from '@fortawesome/free-solid-svg-icons';
 import { useDispatch } from 'react-redux';  // Import pour utiliser dispatch
 import { addSubTask } from '../redux/taskSlice';  // Import de l'action addSubTask
+import { Dispatch } from 'redux';  // Import pour utiliser dispatch
 
 interface TaskCardProps {
     task: Task;
@@ -17,7 +18,7 @@ interface TaskCardProps {
 const TaskCard: React.FC<TaskCardProps> = ({ task, onToggleComplete, onToggleSubTaskComplete, onDelete }) => {
     const [subTaskTitle, setSubTaskTitle] = useState('');  // État pour le titre de la sous-tâche
     const [error, setError] = useState<string | null>(null);
-    const dispatch = useDispatch();  // Utiliser dispatch pour envoyer l'action
+    const dispatch: Dispatch<any> = useDispatch();  // Utiliser dispatch pour envoyer l'action
 
     // Fonction pour gérer l'ajout d'une sous-tâche
     const handleAddSubTask = () => {
