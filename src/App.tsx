@@ -1,26 +1,38 @@
 import React, { useState } from 'react';
+import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import TaskList from './components/Tasklist';
-import './styles/app.css'
+import { SignUp } from './pages/signup';
+import { Signin }   from './pages/signin';
+import './styles/app.css';
 
 function App() {
   const [isDarkMode, setIsDarkMode] = useState(false);
 
-  // Fonction pour basculer le thème
   const toggleTheme = () => {
-    console.log("Theme toggled", isDarkMode ? 'Light Mode' : 'Dark Mode');
     setIsDarkMode(!isDarkMode);
   };
 
   return (
-    <div className={isDarkMode ? 'dark-theme App' : 'light-theme App'}>
-      <header>
-        <button onClick={toggleTheme} className="theme-toggle-button">
-          {isDarkMode ? 'Light Mode' : 'Dark Mode'}
-        </button>
-      </header>
+    <Router>
+      <div className={isDarkMode ? 'dark-theme App' : 'light-theme App'}>
+        <header>
+          <button onClick={toggleTheme} className="theme-toggle-button">
+            {isDarkMode ? 'Light Mode' : 'Dark Mode'}
+          </button>
+          <nav>
+            <Link to="/tasks">Tasks</Link>
+            <Link to="/signup">Sign Up</Link>
+            <Link to="/signin">Sign In</Link>
+          </nav>
+        </header>
 
-      <TaskList /> {/* Composant TaskList */}
-    </div>
+        <Routes>
+          <Route path="/tasks" element={<TaskList />} />
+          <Route path="/signup" element={<SignUp />} />
+          <Route path="/signin" element={<Signin />} />
+        </Routes>
+      </div>
+    </Router>
   );
 }
 
