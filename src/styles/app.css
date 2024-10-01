@@ -6,12 +6,20 @@
 }
 
 html,
-body,
 #root,
 .App {
     height: 100%;
     margin: 0;
     padding: 0;
+     width: 100%;/* Permet de s'assurer que le conteneur s'étend sur toute la largeur de la fenêtre */
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    height: 100vh;
+    margin: 0;
 }
 
 /* Thème clair */
@@ -35,6 +43,7 @@ body,
     flex-direction: column;
     align-items: center;
     box-sizing: border-box;
+    width: 100%;
 }
 
 /* Bouton pour basculer entre les thèmes */

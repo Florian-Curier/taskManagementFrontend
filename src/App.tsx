@@ -27,6 +27,7 @@ function App() {
         </header>
 
         <Routes>
+          <Route path="/" element={<TaskList />} />
           <Route path="/tasks" element={<TaskList />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/signin" element={<Signin />} />
