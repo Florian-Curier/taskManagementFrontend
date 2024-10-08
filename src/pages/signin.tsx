@@ -1,29 +1,30 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { signInWithGoogle } from '../firebase';  // Importez la fonction Google
 
 export function Signin() {
-    const [formData, setFormData] = useState({ email: '', password: '' });
-    const navigate = useNavigate()
+    const [error, setError] = useState<string | null>(null);
+    const navigate = useNavigate();
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
-    };
-
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-        await fetch('/signin', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(formData),
-        });
-        navigate('.tasks') //Rediriger vers la page tasks
+    // Gestion de la connexion via Google
+    const handleGoogleSignIn = async () => {
+        try {
+            await signInWithGoogle();
+            navigate('/tasks');  // Redirige l'utilisateur après la connexion réussie
+        } catch (error) {
+            setError('Erreur lors de la connexion avec Google.');
+            console.error('Erreur lors de la connexion avec Google : ', error);
+        }
     };
 
     return (
-        <form onSubmit={handleSubmit}>
-            <input type="email" name="email" value={formData.email} onChange={handleChange} placeholder="Email" />
-            <input type="password" name="password" value={formData.password} onChange={handleChange} placeholder="Password" />
-            <button type="submit">Sign In</button>
-        </form>
+        <div>
+            <h2>Connexion avec Google</h2>
+            {error && <p style={{ color: 'red' }}>{error}</p>}
+
+            <button onClick={handleGoogleSignIn} className="google-signin-button">
+                Connexion avec Google
+            </button>
+        </div>
     );
 }

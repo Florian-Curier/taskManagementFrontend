@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import TaskList from './components/Tasklist';
-import { SignUp } from './pages/signup';
-import { Signin }   from './pages/signin';
+import { Signin } from './pages/signin';
 import './styles/app.css';
 
 function App() {
@@ -21,16 +20,14 @@ function App() {
           </button>
           <nav>
             <Link to="/tasks">Tasks</Link>
-            <Link to="/signup">Sign Up</Link>
             <Link to="/signin">Sign In</Link>
           </nav>
         </header>
 
         <Routes>
-          <Route path="/" element={<TaskList />} />
           <Route path="/tasks" element={<TaskList />} />
-          <Route path="/signup" element={<SignUp />} />
           <Route path="/signin" element={<Signin />} />
+          <Route path="*" element={<TaskList />} />  {/* Route par défaut si URL non trouvée */}
         </Routes>
       </div>
     </Router>

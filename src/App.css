@@ -1,7 +1,43 @@
+/* Styles généraux pour l'application */
 .App {
-  text-align: center;
+  padding: 20px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: all 0.3s ease;
 }
 
+/* Thème clair */
+.light-theme {
+  background-color: #ffffff;
+  color: #000000;
+}
+
+/* Thème sombre */
+.dark-theme {
+  background-color: #1E1E1E;
+  color: #f0f0f0;
+}
+
+/* Bouton pour basculer entre les thèmes */
+.theme-toggle-button {
+  padding: 10px 20px;
+  margin-bottom: 20px;
+  border: none;
+  border-radius: 4px;
+  background-color: #007BFF;
+  color: white;
+  cursor: pointer;
+  transition: opacity 0.3s ease, background-color 0.3s ease;
+}
+
+.theme-toggle-button:hover {
+  opacity: 0.8;
+  background-color: #0056B3;
+}
+
+/* Style pour le logo (si présent) */
 .App-logo {
   height: 40vmin;
   pointer-events: none;
@@ -13,6 +49,16 @@
   }
 }
 
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Styles pour l'en-tête */
 .App-header {
   background-color: #282c34;
   min-height: 100vh;
@@ -24,15 +70,32 @@
   color: white;
 }
 
-.App-link {
-  color: #61dafb;
+/* Liens de navigation */
+nav {
+  margin-top: 10px;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+nav a {
+  margin-right: 20px;
+  text-decoration: none;
+  color: #6A1B9A;
+  font-weight: bold;
+}
+
+nav a:hover {
+  color: #8E24AA;
+}
+
+/* Adaptation du thème sombre pour la navigation */
+.dark-theme nav a {
+  color: #f0f0f0;
+}
+
+.dark-theme nav a:hover {
+  color: #ffcccb;
+}
+
+/* Liens spécifiques dans l'application */
+.App-link {
+  color: #61dafb;
 }

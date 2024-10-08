@@ -12,6 +12,7 @@ import {
     toggleSubTaskCompleted, 
     deleteTask 
   } from '../redux/taskSlice'; 
+  import { auth } from '../firebase';
 
 const TaskList: React.FC = () => {
   const [taskTitle, setTaskTitle] = useState('');
@@ -20,6 +21,8 @@ const TaskList: React.FC = () => {
   const [taskDueDateTime, setTaskDueDateTime] = useState<Moment | null>(moment()); // Utilisation de Moment
   const dispatch = useDispatch<AppDispatch>();
   const { tasks, loading, error } = useSelector((state: RootState) => state.tasks);
+
+  const userId = auth.currentUser?.uid || 'guest'; // Récupération de l'ID de l'utilisateur connecté
 
   useEffect(() => {
     dispatch(fetchTasks());
@@ -34,7 +37,7 @@ const TaskList: React.FC = () => {
         completed: false,
         priority: taskPriority,
         dueDate: taskDueDateTime ? taskDueDateTime.toISOString() : '', // Utilisation de moment pour la date
-        UserId: '12345',
+        UserId: userId, //Utilisation de l'ID dynamique 
         subTasks: [], 
       };
 
